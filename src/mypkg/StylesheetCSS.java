@@ -28,7 +28,7 @@ public class StylesheetCSS {
                 .addPropertyToSelector("background-color", "green");
     }
 
-    public String getStyleSheet() {
+    public String getCode() {
         String textStyle = cssTextFactory.generateCSSText();
         return textStyle;
     }

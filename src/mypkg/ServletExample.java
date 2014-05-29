@@ -41,7 +41,9 @@ public class ServletExample extends HttpServlet {
             .addHeader("Header 2", wrapWithClassTag("ugly"))
             .addParagraph("Another one! <span>Random words, Random words</span>, Random words.",
                     wrapWithClassTag("fancy"));
-        updateStyle(new StylesheetCSS(attributeMap));
+
+        StylesheetCSS CSSCode = new StylesheetCSS(attributeMap);
+        updateStyle(CSSCode);
 
         out.println(HTMLText);
     }
@@ -114,8 +116,8 @@ public class ServletExample extends HttpServlet {
         return this;
     }
 
-    private void updateStyle(final StylesheetCSS textStyle) {
-        String newStyle = textStyle.getStyleSheet();
+    private void updateStyle(final StylesheetCSS styleSheet) {
+        String newStyle = styleSheet.getCode();
         final String firstPart = HTMLText.substring(0, HTMLText.indexOf("</style>"));
         final String middlePart = newStyle;
         final String lastPart = HTMLText.substring(HTMLText.indexOf("</style>"));
@@ -134,7 +136,9 @@ public class ServletExample extends HttpServlet {
             .addParagraph("Another paragraph!", hwe.wrapWithClassTag("ugly"))
             .addHeader("Header 2", hwe.wrapWithClassTag("ugly"))
             .addParagraph("Another <span>one</span>!", hwe.wrapWithClassTag("fancy"));
-        hwe.updateStyle(new StylesheetCSS(hwe.attributeMap));
+
+        StylesheetCSS CSSCode = new StylesheetCSS(hwe.attributeMap);
+        hwe.updateStyle(CSSCode);
         System.out.println(hwe.getHTMLText());
     }
 }

@@ -4,6 +4,7 @@ To launch application,
 
 1) Deploy .class files to E:\CPSC\apache-tomcat-7.0.54\webapps\WEB-INF\classes\mypkg 
 or [path-to-tomcat]\webapps\WEB-INF\classes\mypkg
+
 2) In the E:\CPSC\apache-tomcat-7.0.54\webapps\WEB-INF\ subdirectory, create web.xml with following:
 
     .........

@@ -1,9 +1,9 @@
 package mypkg;
 
-public class HTMLClass {
+public class ClassTag {
     private String classTag = "";
 
-    public HTMLClass(String className) {
+    public ClassTag(String className) {
         classTag = "class=\"" + className + "\"";
     }
 

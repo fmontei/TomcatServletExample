@@ -34,12 +34,13 @@ public class ServletExample extends HttpServlet {
         createHTMLText();
         createHTMLHeadAndStyle("Test Title");
         createHTMLBody()
-            .addHeader("Hello World!!!")
-            .addHeader("Header 1")
-            .addParagraph("This is a new paragraph! It's awesome!", createNewHTMLClass("fancy"))
-            .addParagraph("Another paragraph!", createNewHTMLClass("ugly"))
-            .addHeader("Header 2")
-            .addParagraph("Another one!", createNewHTMLClass("fancy"));
+            .addHeader("Hello World!!!", null)
+            .addHeader("Header 1", null)
+            .addParagraph("This is a new paragraph! It's awesome!", wrapWithClassTag("fancy"))
+            .addParagraph("Another paragraph!", wrapWithClassTag("ugly"))
+            .addHeader("Header 2", wrapWithClassTag("ugly"))
+            .addParagraph("Another one! <span>Random words, Random words</span>, Random words.",
+                    wrapWithClassTag("fancy"));
         updateStyle(new StylesheetCSS(attributeMap));
 
         out.println(HTMLText);
@@ -73,8 +74,8 @@ public class ServletExample extends HttpServlet {
         HTMLText = newText;
     }
 
-    private HTMLClass createNewHTMLClass(String className) {
-        HTMLClass newHTMLClass = new HTMLClass(className);
+    private ClassTag wrapWithClassTag(String className) {
+        ClassTag newHTMLClass = new ClassTag(className);
         attributeMap.put(className.toLowerCase(), newHTMLClass);
         return newHTMLClass;
     }
@@ -87,9 +88,14 @@ public class ServletExample extends HttpServlet {
         return this;
     }
 
-    private ServletExample addHeader(String header) {
+    private ServletExample addHeader(String header, Object tag) {
         String newText = HTMLText.substring(0, HTMLText.indexOf("</body>"));
-        newText += "<h1>" + header + "</h1>";
+        if (tag instanceof ClassTag) {
+            newText += "<h1 " + ((ClassTag) tag).getClassTag() + ">" + header + "</h1>";
+        }
+        else {
+            newText += "<h1>" + header + "</h1>";
+        }
         newText += HTMLText.substring(HTMLText.indexOf("</body>"));
         HTMLText = newText;
         return this;
@@ -97,8 +103,8 @@ public class ServletExample extends HttpServlet {
 
     private ServletExample addParagraph(String text, Object tag) {
         String newText = HTMLText.substring(0, HTMLText.indexOf("</body>"));
-        if (tag instanceof HTMLClass) {
-            newText += "<p " + ((HTMLClass) tag).getClassTag() + ">" + text + "</p>";
+        if (tag instanceof ClassTag) {
+            newText += "<p " + ((ClassTag) tag).getClassTag() + ">" + text + "</p>";
         }
         else {
             newText += "<p>" + text + "</p>";
@@ -122,12 +128,12 @@ public class ServletExample extends HttpServlet {
         hwe.createHTMLText();
         hwe.createHTMLHeadAndStyle("Test Title");
         hwe.createHTMLBody()
-            .addHeader("Hello World!!!")
-            .addHeader("Header 1")
-            .addParagraph("This is a new paragraph! It's awesome!", hwe.createNewHTMLClass("fancy"))
-            .addParagraph("Another paragraph!", hwe.createNewHTMLClass("ugly"))
-            .addHeader("Header 2")
-            .addParagraph("Another one!", hwe.createNewHTMLClass("fancy"));
+            .addHeader("Hello World!!!", null)
+            .addHeader("Header 1", null)
+            .addParagraph("This is a new paragraph! It's awesome!", hwe.wrapWithClassTag("fancy"))
+            .addParagraph("Another paragraph!", hwe.wrapWithClassTag("ugly"))
+            .addHeader("Header 2", hwe.wrapWithClassTag("ugly"))
+            .addParagraph("Another <span>one</span>!", hwe.wrapWithClassTag("fancy"));
         hwe.updateStyle(new StylesheetCSS(hwe.attributeMap));
         System.out.println(hwe.getHTMLText());
     }

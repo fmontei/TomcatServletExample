@@ -16,12 +16,12 @@ public class CSSTextFactory {
         if (attributeExists(selector)) {
             Object attribute = attributeMap.get(selector);
 
-            if (attribute instanceof HTMLClass) {
+            if (attribute instanceof ClassTag) {
                 CSSText += ("." + selector + "{}");
             }
-            else {
-                CSSText += (selector + "{}");
-            }
+        }
+        else {
+            CSSText += (selector + "{}");
         }
 
         return this;

@@ -22,6 +22,10 @@ public class StylesheetCSS {
                 .addPropertyToSelector("font-style", "italic")
                 .addPropertyToSelector("font", "16px orange Impact")
                 .addPropertyToSelector("background-color", "orange");
+        cssTextFactory.addSelector("span")
+                .addPropertyToSelector("font-style", "underline")
+                .addPropertyToSelector("font", "24px red cursive")
+                .addPropertyToSelector("background-color", "green");
     }
 
     public String getStyleSheet() {

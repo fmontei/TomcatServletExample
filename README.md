@@ -24,5 +24,8 @@ or [path-to-tomcat]\webapps\WEB-INF\classes\mypkg
 3) Navigate to http://localhost:8080/TomcatServletExample
 
 NOTE: %CATALINA_HOME% environment variable must be set up. 
+
 Go to %CATALINA_HOME%\bin and type startup in command prompt to initiate server.
+
 Do not exit out of window that opens.
+

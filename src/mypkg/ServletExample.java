@@ -10,11 +10,11 @@ import javax.servlet.http.*;
 // Extend HttpServlet class
 public class ServletExample extends HttpServlet {
 
-    private String HTMLText = "";
+    private String HTMLCode = "";
     private Map<String, Object> attributeMap =  new HashMap<String, Object>();
 
-    public String getHTMLText() {
-        return HTMLText;
+    public String getHTMLCode() {
+        return HTMLCode;
     }
 
     public void doGet(HttpServletRequest request,
@@ -39,41 +39,73 @@ public class ServletExample extends HttpServlet {
             .addParagraph("This is a new paragraph! It's awesome!", wrapWithClassTag("fancy"))
             .addParagraph("Another paragraph!", wrapWithClassTag("ugly"))
             .addHeader("Header 2", wrapWithClassTag("ugly"))
-            .addParagraph("Another one! <span>Random words, Random words</span>, Random words.",
-                    wrapWithClassTag("fancy"));
+            .addParagraph("Another one! <span>Random words, Random words</span>, Random words.", wrapWithClassTag("fancy"));
 
         StylesheetCSS CSSCode = new StylesheetCSS(attributeMap);
         updateStyle(CSSCode);
-
-        out.println(HTMLText);
+        out.println(HTMLCode);
     }
 
     private void createHTMLText() {
-        HTMLText += "<!DOCTYPE html><html></html>";
+        HTMLCode += "<!DOCTYPE html><html></html>";
     }
 
     private void createHTMLHeadAndStyle(String title) {
-        String newText = HTMLText.substring(0, HTMLText.indexOf("</html>"));
+        String newText = HTMLCode.substring(0, HTMLCode.indexOf("</html>"));
         newText += "<head></head>";
-        newText += HTMLText.substring(HTMLText.indexOf("</html>"));
-        HTMLText = newText;
+        newText += HTMLCode.substring(HTMLCode.indexOf("</html>"));
+        HTMLCode = newText;
         createHTMLTitle(title);
         createStyle();
     }
 
     private void createHTMLTitle(String title) {
-        String newText = HTMLText.substring(0, HTMLText.indexOf("</head>"));
+        String newText = HTMLCode.substring(0, HTMLCode.indexOf("</head>"));
         newText += "<title>" + title + "</title>";
-        newText += HTMLText.substring(HTMLText.indexOf("</head>"));
-        HTMLText = newText;
+        newText += HTMLCode.substring(HTMLCode.indexOf("</head>"));
+        HTMLCode = newText;
     }
 
     private void createStyle() {
         String style = "<style></style>";
-        String newText = HTMLText.substring(0, HTMLText.indexOf("</head>"));
+        String newText = HTMLCode.substring(0, HTMLCode.indexOf("</head>"));
         newText += style;
-        newText += HTMLText.substring(HTMLText.indexOf("</head>"));
-        HTMLText = newText;
+        newText += HTMLCode.substring(HTMLCode.indexOf("</head>"));
+        HTMLCode = newText;
+    }
+
+    private ServletExample createHTMLBody() {
+        String newText = HTMLCode.substring(0, HTMLCode.indexOf("</html>"));
+        newText += "<body></body>";
+        newText += HTMLCode.substring(HTMLCode.indexOf("</html>"));
+        HTMLCode = newText;
+        return this;
+    }
+
+    private ServletExample addHeader(String header, Object tag) {
+        String newText = HTMLCode.substring(0, HTMLCode.indexOf("</body>"));
+        if (tag instanceof ClassTag) {
+            newText += "<h1 " + ((ClassTag) tag).getClassTag() + ">" + header + "</h1>";
+        }
+        else {
+            newText += "<h1>" + header + "</h1>";
+        }
+        newText += HTMLCode.substring(HTMLCode.indexOf("</body>"));
+        HTMLCode = newText;
+        return this;
+    }
+
+    private ServletExample addParagraph(String text, Object tag) {
+        String newText = HTMLCode.substring(0, HTMLCode.indexOf("</body>"));
+        if (tag instanceof ClassTag) {
+            newText += "<p " + ((ClassTag) tag).getClassTag() + ">" + text + "</p>";
+        }
+        else {
+            newText += "<p>" + text + "</p>";
+        }
+        newText += HTMLCode.substring(HTMLCode.indexOf("</body>"));
+        HTMLCode = newText;
+        return this;
     }
 
     private ClassTag wrapWithClassTag(String className) {
@@ -82,46 +114,12 @@ public class ServletExample extends HttpServlet {
         return newHTMLClass;
     }
 
-    private ServletExample createHTMLBody() {
-        String newText = HTMLText.substring(0, HTMLText.indexOf("</html>"));
-        newText += "<body></body>";
-        newText += HTMLText.substring(HTMLText.indexOf("</html>"));
-        HTMLText = newText;
-        return this;
-    }
-
-    private ServletExample addHeader(String header, Object tag) {
-        String newText = HTMLText.substring(0, HTMLText.indexOf("</body>"));
-        if (tag instanceof ClassTag) {
-            newText += "<h1 " + ((ClassTag) tag).getClassTag() + ">" + header + "</h1>";
-        }
-        else {
-            newText += "<h1>" + header + "</h1>";
-        }
-        newText += HTMLText.substring(HTMLText.indexOf("</body>"));
-        HTMLText = newText;
-        return this;
-    }
-
-    private ServletExample addParagraph(String text, Object tag) {
-        String newText = HTMLText.substring(0, HTMLText.indexOf("</body>"));
-        if (tag instanceof ClassTag) {
-            newText += "<p " + ((ClassTag) tag).getClassTag() + ">" + text + "</p>";
-        }
-        else {
-            newText += "<p>" + text + "</p>";
-        }
-        newText += HTMLText.substring(HTMLText.indexOf("</body>"));
-        HTMLText = newText;
-        return this;
-    }
-
     private void updateStyle(final StylesheetCSS styleSheet) {
         String newStyle = styleSheet.getCode();
-        final String firstPart = HTMLText.substring(0, HTMLText.indexOf("</style>"));
+        final String firstPart = HTMLCode.substring(0, HTMLCode.indexOf("</style>"));
         final String middlePart = newStyle;
-        final String lastPart = HTMLText.substring(HTMLText.indexOf("</style>"));
-        HTMLText = firstPart + middlePart + lastPart;
+        final String lastPart = HTMLCode.substring(HTMLCode.indexOf("</style>"));
+        HTMLCode = firstPart + middlePart + lastPart;
     }
 
     // Test HTML and CSS code
@@ -139,6 +137,6 @@ public class ServletExample extends HttpServlet {
 
         StylesheetCSS CSSCode = new StylesheetCSS(hwe.attributeMap);
         hwe.updateStyle(CSSCode);
-        System.out.println(hwe.getHTMLText());
+        System.out.println(hwe.getHTMLCode());
     }
 }
